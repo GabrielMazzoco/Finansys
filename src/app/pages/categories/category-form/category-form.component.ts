@@ -32,7 +32,7 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked(): void {
-    throw new Error("Method not implemented.");
+    this.setPageTitle();
   }
 
   // Private Methods
@@ -53,7 +53,7 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
   }
 
   private loadCategory() {
-    if (this.currentAction == "edit") {
+    if (this.currentAction === "edit") {
       this.route.paramMap
         .pipe(
           switchMap(params => this.categoryService.getById(+params.get("id")))
@@ -67,6 +67,15 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
             alert("Ocorreu um erro no Servidor, tente mais tarde");
           }
         );
+    }
+  }
+
+  private setPageTitle() {
+    if (this.currentAction === "new") {
+      this.pageTitle = "Cadastro de Nova Categoria";
+    } else {
+      const categoryName = this.category.name || "";
+      this.pageTitle = "Editando Categoria: " + categoryName;
     }
   }
 }
